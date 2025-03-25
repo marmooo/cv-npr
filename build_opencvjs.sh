@@ -12,6 +12,8 @@ options="\
   --cmake_option="-DBUILD_opencv_features2d=OFF" \
   --cmake_option="-DBUILD_opencv_flann=OFF" \
   --cmake_option="-DBUILD_opencv_photo=ON" \
+  --cmake_option="-DBUILD_opencv_video=OFF" \
+  --cmake_option="-DBUILD_opencv_xphoto=OFF" \
   --cmake_option="-DBUILD_EXAMPLES=OFF" \
   --config opencv_js.config_min.py \
   --disable_single_file \
