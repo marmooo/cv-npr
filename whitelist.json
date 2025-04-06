@@ -1,0 +1,22 @@
+{
+  "core": {
+    "whitelist": {
+      "Algorithm": []
+    }
+  },
+  "imgproc": {
+    "whitelist": {
+      "": ["cvtColor"]
+    }
+  },
+  "photo": {
+    "whitelist": {
+      "": [
+        "detailEnhance",
+        "edgePreservingFilter",
+        "pencilSketch",
+        "stylization"
+      ]
+    }
+  }
+}
