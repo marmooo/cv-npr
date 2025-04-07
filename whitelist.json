@@ -18,5 +18,12 @@
         "stylization"
       ]
     }
+  },
+  "xphoto": {
+    "whitelist": {
+      "": [
+        "xphoto_oilPainting"
+      ]
+    }
   }
 }

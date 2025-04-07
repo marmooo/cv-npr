@@ -371,6 +371,7 @@ class FilterPanel extends LoadPanel {
     this.addEdgePreservingFilterEvents(panel);
     this.addPencilSketchEvents(panel);
     this.addStylizationEvents(panel);
+    this.addOilPaintingEvents(panel);
     this.currentFilter = this.filters.detailEnhance;
   }
 
@@ -509,6 +510,36 @@ class FilterPanel extends LoadPanel {
       const src = cv.imread(this.originalCanvas);
       cv.cvtColor(src, src, cv.COLOR_RGBA2RGB, 0);
       cv.stylization(src, src, sigmaS, sigmaR);
+      cv.cvtColor(src, src, cv.COLOR_RGB2RGBA, 0);
+      cv.imshow(this.canvas, src);
+      src.delete();
+      dst.delete();
+    }
+  }
+
+  addOilPaintingEvents(panel) {
+    const root = panel.querySelector(".oilPainting");
+    this.filters.oilPainting = {
+      root,
+      apply: () => this.oilPainting(),
+      inputs: {
+        size: root.querySelector(".size"),
+        dynRatio: root.querySelector(".dynRatio"),
+      },
+    };
+    this.addInputEvents(this.filters.oilPainting);
+  }
+
+  oilPainting() {
+    const filter = this.filters.oilPainting;
+    const dynRatio = Number(filter.inputs.dynRatio.value);
+    if (dynRatio === 0) {
+      this.canvasContext.drawImage(this.originalCanvas, 0, 0);
+    } else {
+      const size = Number(filter.inputs.size.value) * 2 + 1;
+      const src = cv.imread(this.originalCanvas);
+      cv.cvtColor(src, src, cv.COLOR_RGBA2RGB, 0);
+      cv.xphoto_oilPainting(src, src, size, dynRatio);
       cv.cvtColor(src, src, cv.COLOR_RGB2RGBA, 0);
       cv.imshow(this.canvas, src);
       src.delete();
