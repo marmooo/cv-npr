@@ -157,7 +157,8 @@
                         <option value="edgePreservingFilter">edge preserving filter</option>
                         <option value="pencilSketch">pencil sketch</option>
                         <option value="stylization">stylization</option>
-                        <option value="oilPainting">oilPainting</option>
+                        <option value="oilPainting">oil painting</option>
+                        <option value="anisotropicDiffusion">anisotropic diffusion</option>
                       </select>
                     </div>
                   </div>
@@ -245,6 +246,29 @@
                         <div class="filterLabel col-form-label">dynRatio</div>
                         <div class="d-flex w-100">
                           <input type="range" class="dynRatio form-range" min="0" max="10" step="1" value="1" data-value="1">
+                          <button title="reset" class="btn p-0" type="button">↩️</button>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="anisotropicDiffusion d-none">
+                      <div class="form-group d-flex align-items-center">
+                        <div class="filterLabel col-form-label">alpha</div>
+                        <div class="d-flex w-100">
+                          <input type="range" class="alpha form-range" min="0" max="1" step="0.01" value="0.2" data-value="0.2">
+                          <button title="reset" class="btn p-0" type="button">↩️</button>
+                        </div>
+                      </div>
+                      <div class="form-group d-flex align-items-center">
+                        <div class="filterLabel col-form-label">K</div>
+                        <div class="d-flex w-100">
+                          <input type="range" class="K form-range" min="0" max="1" step="0.01" value="0.2" data-value="0.2">
+                          <button title="reset" class="btn p-0" type="button">↩️</button>
+                        </div>
+                      </div>
+                      <div class="form-group d-flex align-items-center">
+                        <div class="filterLabel col-form-label">iterations</div>
+                        <div class="d-flex w-100">
+                          <input type="range" class="iterations form-range" min="0" max="10" step="1" value="1" data-value="1">
                           <button title="reset" class="btn p-0" type="button">↩️</button>
                         </div>
                       </div>

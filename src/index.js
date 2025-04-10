@@ -372,6 +372,7 @@ class FilterPanel extends LoadPanel {
     this.addPencilSketchEvents(panel);
     this.addStylizationEvents(panel);
     this.addOilPaintingEvents(panel);
+    this.addAnisotropicDiffusionEvents(panel);
     this.currentFilter = this.filters.detailEnhance;
   }
 
@@ -543,7 +544,37 @@ class FilterPanel extends LoadPanel {
       cv.cvtColor(src, src, cv.COLOR_RGB2RGBA, 0);
       cv.imshow(this.canvas, src);
       src.delete();
-      dst.delete();
+    }
+  }
+
+  addAnisotropicDiffusionEvents(panel) {
+    const root = panel.querySelector(".anisotropicDiffusion");
+    this.filters.anisotropicDiffusion = {
+      root,
+      apply: () => this.anisotropicDiffusion(),
+      inputs: {
+        alpha: root.querySelector(".alpha"),
+        K: root.querySelector(".K"),
+        iterations: root.querySelector(".iterations"),
+      },
+    };
+    this.addInputEvents(this.filters.anisotropicDiffusion);
+  }
+
+  anisotropicDiffusion() {
+    const filter = this.filters.anisotropicDiffusion;
+    const K = Number(filter.inputs.K.value);
+    const alpha = Number(filter.inputs.alpha.value);
+    const iterations = Number(filter.inputs.iterations.value);
+    if (K === 0 || alpha === 0 || iterations === 0) {
+      this.canvasContext.drawImage(this.originalCanvas, 0, 0);
+    } else {
+      const src = cv.imread(this.originalCanvas);
+      cv.cvtColor(src, src, cv.COLOR_RGBA2RGB, 0);
+      cv.ximgproc_anisotropicDiffusion(src, src, alpha, K, iterations);
+      cv.cvtColor(src, src, cv.COLOR_RGB2RGBA, 0);
+      cv.imshow(this.canvas, src);
+      src.delete();
     }
   }
 
