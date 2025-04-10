@@ -514,7 +514,6 @@ class FilterPanel extends LoadPanel {
       cv.cvtColor(src, src, cv.COLOR_RGB2RGBA, 0);
       cv.imshow(this.canvas, src);
       src.delete();
-      dst.delete();
     }
   }
 
