@@ -635,7 +635,7 @@ class FilterPanel extends LoadPanel {
         0,
         cv.INTER_AREA,
       );
-      cv.resize(src, src, new cv.Size(w, h), 0, 0, cv.INTER_AREA);
+      cv.resize(src, src, new cv.Size(w, h), 0, 0, cv.INTER_NEAREST);
       cv.imshow(this.canvas, src);
       src.delete();
     }
