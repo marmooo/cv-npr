@@ -48,13 +48,6 @@
         background-image: var(--transparent-bg-dark, none);
       }
       .loading { transition: filter 2s; filter: brightness(200%); }
-      .originalImage { top: 0; left: 0; opacity:.1; }
-      .paintCanvas { top: 0; left: 0; }
-      .paintPanel { display:flex; justify-content:center; align-items:center; height:96px; }
-      .palette { display:flex; justify-content:center; align-items:center; }
-      .front { width:64px; height:64px; background:white; color:black; }
-      .eraser { width:64px; height:64px; background:siver; }
-      .back { width:96px; height:96px; background:black; color:white; }
       .panelContainer { display:flex; flex-direction:column; }
       .canvasContainer { width:100%; height:calc(100vh - 110px); }
       .toolbar { display:flex; flex-direction:row; justify-content:space-between; }
@@ -147,7 +140,6 @@
             <div class="canvasContainer d-flex align-items-center justify-content-center bg-dark-subtle">
               <div class="position-relative w-100 h-100">
                 <canvas class="image transparent-bg w-100 h-100 object-fit-contain"></canvas>
-                <canvas class="originalImage w-100 h-100 object-fit-contain position-absolute d-none"></canvas>
                 <div class="filterNav bg-dark-subtle opacity-75 p-2">
                   <div class="form-group d-flex align-items-center">
                     <div class="filterLabel col-form-label">Filter</div>

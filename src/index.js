@@ -243,7 +243,7 @@ class FilterPanel extends LoadPanel {
     this.canvasContext = this.canvas.getContext("2d", {
       willReadFrequently: true,
     });
-    this.originalCanvas = panel.querySelector(".originalImage");
+    this.originalCanvas = document.createElement("canvas");
     this.originalCanvasContext = this.originalCanvas.getContext("2d", {
       willReadFrequently: true,
     });
@@ -255,14 +255,6 @@ class FilterPanel extends LoadPanel {
     panel.querySelector(".moveTop").onclick = () => this.moveLoadPanel();
     panel.querySelector(".download").onclick = () => this.download();
     this.addFilters(panel);
-  }
-
-  toggleCanvas() {
-    if (this.canvas.parentNode) {
-      this.canvas.replaceWith(this.originalCanvas);
-    } else {
-      this.originalCanvas.replaceWith(this.canvas);
-    }
   }
 
   resizeWell(target) {
