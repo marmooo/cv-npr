@@ -6,7 +6,7 @@
   },
   "imgproc": {
     "whitelist": {
-      "": ["applyColorMap", "cvtColor"]
+      "": ["applyColorMap", "cvtColor", "resize"]
     }
   },
   "photo": {

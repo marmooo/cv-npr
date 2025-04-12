@@ -374,6 +374,7 @@ class FilterPanel extends LoadPanel {
     this.addOilPaintingEvents(panel);
     this.addAnisotropicDiffusionEvents(panel);
     this.addApplyColorMapEvents(panel);
+    this.addMosaicEvents(panel);
     this.currentFilter = this.filters.detailEnhance;
   }
 
@@ -600,6 +601,41 @@ class FilterPanel extends LoadPanel {
       cv.cvtColor(src, src, cv.COLOR_RGBA2RGB, 0);
       cv.applyColorMap(src, src, colormap);
       cv.cvtColor(src, src, cv.COLOR_RGB2RGBA, 0);
+      cv.imshow(this.canvas, src);
+      src.delete();
+    }
+  }
+
+  addMosaicEvents(panel) {
+    const root = panel.querySelector(".mosaic");
+    this.filters.mosaic = {
+      root,
+      apply: () => this.mosaic(),
+      inputs: {
+        dsize: root.querySelector(".dsize"),
+      },
+    };
+    this.addInputEvents(this.filters.mosaic);
+  }
+
+  mosaic() {
+    const filter = this.filters.mosaic;
+    const dsize = Number(filter.inputs.dsize.value);
+    if (dsize === 1) {
+      this.canvasContext.drawImage(this.originalCanvas, 0, 0);
+    } else {
+      const src = cv.imread(this.originalCanvas);
+      const w = src.cols;
+      const h = src.rows;
+      cv.resize(
+        src,
+        src,
+        new cv.Size(w / dsize, h / dsize),
+        0,
+        0,
+        cv.INTER_AREA,
+      );
+      cv.resize(src, src, new cv.Size(w, h), 0, 0, cv.INTER_AREA);
       cv.imshow(this.canvas, src);
       src.delete();
     }
