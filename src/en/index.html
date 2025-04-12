@@ -160,6 +160,7 @@
                         <option value="oilPainting">oil painting</option>
                         <option value="anisotropicDiffusion">anisotropic diffusion</option>
                         <option value="applyColorMap">apply color map</option>
+                        <option value="colorPencil">color pencil</option>
                         <option value="mosaic">mosaic</option>
                       </select>
                     </div>
@@ -280,6 +281,15 @@
                         <div class="filterLabel col-form-label">colormap</div>
                         <div class="d-flex w-100">
                           <input type="range" class="colormap form-range" min="0" max="21" step="1" value="1" data-value="1">
+                          <button title="reset" class="btn p-0" type="button">↩️</button>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="colorPencil d-none">
+                      <div class="form-group d-flex align-items-center">
+                        <div class="filterLabel col-form-label">iterations</div>
+                        <div class="d-flex w-100">
+                          <input type="range" class="iterations form-range" min="0" max="10" step="1" value="5" data-value="5">
                           <button title="reset" class="btn p-0" type="button">↩️</button>
                         </div>
                       </div>

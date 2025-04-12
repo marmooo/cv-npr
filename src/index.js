@@ -374,6 +374,7 @@ class FilterPanel extends LoadPanel {
     this.addOilPaintingEvents(panel);
     this.addAnisotropicDiffusionEvents(panel);
     this.addApplyColorMapEvents(panel);
+    this.addColorPencilEvents(panel);
     this.addMosaicEvents(panel);
     this.currentFilter = this.filters.detailEnhance;
   }
@@ -601,6 +602,46 @@ class FilterPanel extends LoadPanel {
       cv.cvtColor(src, src, cv.COLOR_RGBA2RGB, 0);
       cv.applyColorMap(src, src, colormap);
       cv.cvtColor(src, src, cv.COLOR_RGB2RGBA, 0);
+      cv.imshow(this.canvas, src);
+      src.delete();
+    }
+  }
+
+  addColorPencilEvents(panel) {
+    const root = panel.querySelector(".colorPencil");
+    this.filters.colorPencil = {
+      root,
+      apply: () => this.colorPencil(),
+      inputs: {
+        iterations: root.querySelector(".iterations"),
+      },
+    };
+    this.addInputEvents(this.filters.colorPencil);
+  }
+
+  colorPencil() {
+    const filter = this.filters.colorPencil;
+    const iterations = Number(filter.inputs.iterations.value);
+    if (iterations === 0) {
+      this.canvasContext.drawImage(this.originalCanvas, 0, 0);
+    } else {
+      const src = cv.imread(this.originalCanvas);
+      const dst = new cv.Mat();
+      const M = cv.Mat.ones(3, 3, cv.CV_8U);
+      const anchor = new cv.Point(-1, -1);
+      cv.dilate(
+        src,
+        dst,
+        M,
+        anchor,
+        iterations,
+        cv.BORDER_CONSTANT,
+        cv.morphologyDefaultBorderValue(),
+      );
+      cv.absdiff(src, dst, src);
+      dst.delete();
+      M.delete();
+      cv.bitwise_not(src, src);
       cv.imshow(this.canvas, src);
       src.delete();
     }
