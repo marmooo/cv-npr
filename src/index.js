@@ -373,6 +373,7 @@ class FilterPanel extends LoadPanel {
     this.addStylizationEvents(panel);
     this.addOilPaintingEvents(panel);
     this.addAnisotropicDiffusionEvents(panel);
+    this.addApplyColorMapEvents(panel);
     this.currentFilter = this.filters.detailEnhance;
   }
 
@@ -571,6 +572,33 @@ class FilterPanel extends LoadPanel {
       const src = cv.imread(this.originalCanvas);
       cv.cvtColor(src, src, cv.COLOR_RGBA2RGB, 0);
       cv.ximgproc_anisotropicDiffusion(src, src, alpha, K, iterations);
+      cv.cvtColor(src, src, cv.COLOR_RGB2RGBA, 0);
+      cv.imshow(this.canvas, src);
+      src.delete();
+    }
+  }
+
+  addApplyColorMapEvents(panel) {
+    const root = panel.querySelector(".applyColorMap");
+    this.filters.applyColorMap = {
+      root,
+      apply: () => this.applyColorMap(),
+      inputs: {
+        colormap: root.querySelector(".colormap"),
+      },
+    };
+    this.addInputEvents(this.filters.applyColorMap);
+  }
+
+  applyColorMap() {
+    const filter = this.filters.applyColorMap;
+    const colormap = Number(filter.inputs.colormap.value);
+    if (colormap === 0) {
+      this.canvasContext.drawImage(this.originalCanvas, 0, 0);
+    } else {
+      const src = cv.imread(this.originalCanvas);
+      cv.cvtColor(src, src, cv.COLOR_RGBA2RGB, 0);
+      cv.applyColorMap(src, src, colormap);
       cv.cvtColor(src, src, cv.COLOR_RGB2RGBA, 0);
       cv.imshow(this.canvas, src);
       src.delete();
