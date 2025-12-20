@@ -11,6 +11,6 @@ bash build.sh
 
 ## Attribution
 
-`src/favicon/favicon.svg` is modified
+`src/favicon/favicon.svg` is created from
 [Tabler Icons](https://github.com/tabler/tabler-icons) lincesed under the
 [MIT](https://github.com/tabler/tabler-icons/blob/master/LICENSE)
