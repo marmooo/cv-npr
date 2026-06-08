@@ -1,4 +1,4 @@
-const cacheName = "2026-05-17 00:00";
+const cacheName = "2026-06-09 00:00";
 const urlsToCache = [
   "/cv-npr/coi-serviceworker.js",
   "/cv-npr/index.js",
