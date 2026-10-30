@@ -58,6 +58,13 @@ function loadScript(url) {
   });
 }
 
+async function initOpenCV() {
+  await loadScript(await getOpenCVPath());
+  // opencv_js.js is built with MODULARIZE: `cv` stays a factory function
+  // until the WebAssembly runtime is ready.
+  globalThis.cv = typeof cv === "function" ? await cv() : await cv;
+}
+
 function getTransparentBackgroundImage(size, colors) {
   const canvas = document.createElement("canvas");
   canvas.width = size;
@@ -170,12 +177,7 @@ class LoadPanel extends Panel {
   handleImageOnloadEvent = (event) => {
     const img = event.currentTarget;
     filterPanel.setCanvas(img);
-    const filter = filterPanel.currentFilter;
-    filterPanel.canvas.classList.add("loading");
-    setTimeout(() => {
-      filter.apply();
-      filterPanel.canvas.classList.remove("loading");
-    }, 0);
+    filterPanel.applyFilter(filterPanel.currentFilter);
   };
 
   loadImage(url) {
@@ -356,11 +358,21 @@ class FilterPanel extends LoadPanel {
     this.selectedIndex = selectedIndex;
     const filter = this.filters[currClass];
     this.currentFilter = filter;
+    this.applyFilter(filter);
+  }
+
+  async applyFilter(filter) {
     this.canvas.classList.add("loading");
-    setTimeout(() => {
-      this.currentFilter.apply();
+    try {
+      await cvReady;
+      // let the browser paint the loading state before the heavy work
+      await new Promise((resolve) => setTimeout(resolve, 0));
+      filter.apply();
+    } catch (err) {
+      console.error(err);
+    } finally {
       this.canvas.classList.remove("loading");
-    }, 0);
+    }
   }
 
   addFilters(panel) {
@@ -379,13 +391,7 @@ class FilterPanel extends LoadPanel {
 
   addInputEvents(filter) {
     for (const input of Object.values(filter.inputs)) {
-      input.addEventListener("input", () => {
-        this.canvas.classList.add("loading");
-        setTimeout(() => {
-          filter.apply();
-          this.canvas.classList.remove("loading");
-        }, 0);
-      });
+      input.addEventListener("input", () => this.applyFilter(filter));
     }
     for (const node of filter.root.querySelectorAll("button[title=reset]")) {
       node.onclick = () => {
@@ -700,8 +706,7 @@ class FilterPanel extends LoadPanel {
 initLangSelect();
 initTooltip();
 setTransparentCSSVariables();
-await loadScript(await getOpenCVPath());
-cv = await cv();
+const cvReady = initOpenCV();
 
 const filterPanel = new FilterPanel(document.getElementById("filterPanel"));
 const loadPanel = new LoadPanel(document.getElementById("loadPanel"));
